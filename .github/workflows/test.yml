@@ -1,0 +1,31 @@
+name: Test
+on: [push]
+jobs:
+  readmeExample:
+    name: "[TEST] README example"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: "npm ci"
+      - run: "npm run build"
+      - name: "Create CSV file"
+        uses: ./
+        with:
+          path: data/stats.csv
+          columns: Column 1, Column 2, etc
+          "Column 1": 1
+          "Column 2": 2
+          etc: 3
+      - run: cat data/stats.csv
+      - name: "Append to existing CSV file"
+        uses: ./
+        with:
+          path: data/stats.csv
+          columns: Column 1, Column 2, etc
+          "Column 1": 4
+          "Column 2": 5
+          etc: 6
+      - run: cat data/stats.csv

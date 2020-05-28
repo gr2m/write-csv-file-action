@@ -11,7 +11,7 @@ Name: Add row to data.csv
 on:
   schedule:
     # https://crontab.guru/every-day
-    - cron: 0 0 * * *
+    - cron: "0 0 * * *"
 jobs:
   writeData:
     runs-on: ubuntu-latest
@@ -34,7 +34,7 @@ name: Update data/octokit-stats.csv
 on:
   schedule:
     # https://crontab.guru/every-day
-    - cron: 0 0 * * *
+    - cron: "0 0 * * *"
 jobs:
   updateOctokitStats:
     runs-on: ubuntu-latest

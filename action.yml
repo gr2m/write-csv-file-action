@@ -1,0 +1,15 @@
+name: Write to CSV file
+description: "Create or append to a .csv file"
+branding:
+  icon: "archive"
+  color: purple
+inputs:
+  path:
+    description: "Relative path to .csv file (example: data/stats.csv)"
+    required: true
+  columns:
+    description: "Comma separated list of column titles. Inputs with the same names must be set"
+    required: true
+runs:
+  using: "node12"
+  main: "dist/index.js"

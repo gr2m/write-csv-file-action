@@ -1,8 +1,8 @@
 name: Test
 on: [push]
 jobs:
-  readmeExample:
-    name: "[TEST] README example"
+  readmeMinimalExample:
+    name: "[TEST] README minimal example"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -29,3 +29,36 @@ jobs:
           "Column 2": 5
           etc: 6
       - run: cat data/stats.csv
+  readmeAdvancedExample:
+    name: "[TEST] README advanced example"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: "npm ci"
+      - run: "npm run build"
+      - uses: gr2m/org-stats-action@v1.x
+        id: stats
+        with:
+          org: octokit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Create CSV file"
+        uses: ./
+        with:
+          path: data/octokit.csv
+          columns: open issues,closed issues,open pull requests,closed pull requests,merged pull requests
+          "open issues": ${{ fromJson(steps.stats.outputs.data).openIssues }}
+          "closed issues": ${{ fromJson(steps.stats.outputs.data).closedIssues }}
+          "open pull requests": ${{ fromJson(steps.stats.outputs.data).openPullRequests }}
+          "closed pull requests": ${{ fromJson(steps.stats.outputs.data).closedPullRequests }}
+          "merged pull requests": ${{ fromJson(steps.stats.outputs.data).mergedPullRequests }}
+      - run: git config --local user.email "action@github.com"
+      - run: git config --local user.name "GitHub Action"
+      - run: git add data
+      - run: git commit -m "data/octokit.csv updated"
+      - run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

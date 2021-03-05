@@ -5,7 +5,7 @@
   "scripts": {
     "build": "ncc build bin/write-csv-file.js -o dist"
   },
-  "repository": "https://github.com/gr2m/write-csv-file-action",
+  "repository": "github:gr2m/write-csv-file-action",
   "author": "Gregor Martynus (https://twitter.com/gr2m)",
   "dependencies": {
     "@actions/core": "^1.2.6",

@@ -7,6 +7,10 @@ on:
     types:
       - opened
       - synchronize
+
+concurrency:
+  group: ${{ github.ref }}
+
 jobs:
   readmeMinimalExample:
     name: "[TEST] README minimal example"

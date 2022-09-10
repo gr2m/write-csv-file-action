@@ -1,5 +1,5 @@
 name: Test
-on:
+"on":
   push:
     branches:
       - master
@@ -7,10 +7,8 @@ on:
     types:
       - opened
       - synchronize
-
 concurrency:
   group: ${{ github.ref }}
-
 jobs:
   readmeMinimalExample:
     name: "[TEST] README minimal example"
@@ -19,25 +17,25 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
-      - run: "npm ci"
-      - run: "npm run build"
-      - name: "Create CSV file"
+          node-version: lts/*
+      - run: npm ci
+      - run: npm run build
+      - name: Create CSV file
         uses: ./
         with:
           path: data/stats.csv
           columns: Column 1, Column 2, etc
-          "Column 1": 1
-          "Column 2": 2
+          Column 1: 1
+          Column 2: 2
           etc: 3
       - run: cat data/stats.csv
-      - name: "Append to existing CSV file"
+      - name: Append to existing CSV file
         uses: ./
         with:
           path: data/stats.csv
           columns: Column 1, Column 2, etc
-          "Column 1": 4
-          "Column 2": 5
+          Column 1: 4
+          Column 2: 5
           etc: 6
       - run: cat data/stats.csv
   readmeAdvancedExample:
@@ -49,27 +47,29 @@ jobs:
           ref: test-data
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
-      - run: "npm ci"
-      - run: "npm run build"
+          node-version: lts/*
+      - run: npm ci
+      - run: npm run build
       - uses: gr2m/org-stats-action@v1.x
         id: stats
         with:
           org: octokit
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: "Create CSV file"
+      - name: Create CSV file
         uses: ./
         with:
           path: data/octokit.csv
-          columns: open issues,closed issues,open pull requests,closed pull requests,merged pull requests
-          "open issues": ${{ fromJson(steps.stats.outputs.data).openIssues }}
-          "closed issues": ${{ fromJson(steps.stats.outputs.data).closedIssues }}
-          "open pull requests": ${{ fromJson(steps.stats.outputs.data).openPullRequests }}
-          "closed pull requests": ${{ fromJson(steps.stats.outputs.data).closedPullRequests }}
-          "merged pull requests": ${{ fromJson(steps.stats.outputs.data).mergedPullRequests }}
+          columns: >-
+            open issues,closed issues,open pull requests,closed pull
+            requests,merged pull requests
+          open issues: ${{ fromJson(steps.stats.outputs.data).openIssues }}
+          closed issues: ${{ fromJson(steps.stats.outputs.data).closedIssues }}
+          open pull requests: ${{ fromJson(steps.stats.outputs.data).openPullRequests }}
+          closed pull requests: ${{ fromJson(steps.stats.outputs.data).closedPullRequests }}
+          merged pull requests: ${{ fromJson(steps.stats.outputs.data).mergedPullRequests }}
       - run: git config --local user.email "action@github.com"
       - run: git config --local user.name "GitHub Action"
       - run: git add data
       - run: git commit -m "data/octokit.csv updated"
-      - run: "git push"
+      - run: git push

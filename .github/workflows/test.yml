@@ -14,7 +14,7 @@ jobs:
     name: "[TEST] README minimal example"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: lts/*
@@ -42,7 +42,7 @@ jobs:
     name: "[TEST] README advanced example"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: test-data
       - uses: actions/setup-node@v3
